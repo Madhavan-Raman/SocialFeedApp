@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "username": "madhavan_r",
+    "profileImageURL": "https://via.placeholder.com/40",
+    "contentText": "Just finished building my iOS feed app!",
+    "contentImageURL": "https://via.placeholder.com/300"
+  },
+  {
+    "id": 2,
+    "username": "tech_dev",
+    "profileImageURL": "https://via.placeholder.com/40",
+    "contentText": "Swift + Combine is awesome 💥",
+    "contentImageURL": null
+  }
+]

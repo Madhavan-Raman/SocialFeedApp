@@ -1,0 +1,47 @@
+import UIKit
+import Combine
+
+class FeedViewController: UIViewController {
+    private let tableView = UITableView()
+    private let viewModel = FeedViewModel()
+    private var cancellables = Set<AnyCancellable>()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupTableView()
+        bindViewModel()
+        viewModel.fetchPosts()
+    }
+
+    private func setupTableView() {
+        title = "Social Feed"
+        view.backgroundColor = .white
+        tableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.identifier)
+        tableView.dataSource = self
+        view.addSubview(tableView)
+        tableView.frame = view.bounds
+    }
+
+    private func bindViewModel() {
+        viewModel.$posts
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.tableView.reloadData()
+            }
+            .store(in: &cancellables)
+    }
+}
+
+extension FeedViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.posts.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as? PostTableViewCell else {
+            return UITableViewCell()
+        }
+        cell.configure(with: viewModel.posts[indexPath.row])
+        return cell
+    }
+}
